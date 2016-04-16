@@ -1,6 +1,10 @@
 {
+  "scripts": {
+    "start": "http-server -o -c-1"
+  },
   "jspm": {
     "dependencies": {
+      "bootstrap": "github:twbs/bootstrap@^3.3.6",
       "phaser": "github:photonstorm/phaser@^2.4.6"
     },
     "devDependencies": {
