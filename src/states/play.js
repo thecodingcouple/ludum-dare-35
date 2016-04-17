@@ -1,6 +1,7 @@
 import { Phaser } from 'phaser';
 import { Wizard } from '../sprites/wizard';
 import { Monster } from '../sprites/monster';
+import { Tree } from '../sprites/tree';
 
 export class Play extends Phaser.State {
     preload() {
@@ -16,13 +17,18 @@ export class Play extends Phaser.State {
         this.wizard = new Wizard(this.game);
         this.game.add.existing(this.wizard);
         
+        this.trees = this.game.add.group();        
+        
         this.monsters = this.game.add.group();
-        this.monsters.enableBody = true;
         
         for(let x = 0; x < 5; x++) {
             
             let monster = new Monster(this.game);            
             this.monsters.add(monster);
+            
+            
+            let tree = new Tree(this.game);            
+            this.trees.add(tree);
         }
         
         this.monsters.setAll('body.velocity.x', 0);
@@ -48,8 +54,13 @@ export class Play extends Phaser.State {
             this.spell.play();
         }
         
-        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 2000, 2000);
-        this.monsters.forEach(this.game.physics.arcade.collide, this.game.physics.arcade, false,  this.wizard, this.monsters, this.collisionHandler, null, this);
+        //this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 2000, 2000);
+        //this.monsters.forEach(this.game.physics.arcade.collide, this.game.physics.arcade, false,  this.wizard, this.monsters, this.collisionHandler, null, this);
+        
+        this.game.physics.arcade.collide(this.wizard, this.trees);
+        this.game.physics.arcade.collide(this.monsters, this.trees);        
+        //this.game.physics.arcade.collide(this.monsters, this.monsters);
+        this.game.physics.arcade.collide(this.wizard, this.monsters);
     }
     
     collisionHandler() {
