@@ -1,5 +1,5 @@
 # ludum-dare-35
-Source code for our Ludum Dare 35 entry.  The theme is "Shapeshift."
+Source code for our [Ludum Dare 35](http://ludumdare.com/compo/) entry.  The theme is "Shapeshift."
 
 ## Assets
 
