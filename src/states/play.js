@@ -1,5 +1,6 @@
 import { Phaser } from 'phaser';
 import { Wizard } from '../sprites/wizard';
+import { Monster } from '../sprites/monster';
 
 export class Play extends Phaser.State {
     preload() {
@@ -11,8 +12,10 @@ export class Play extends Phaser.State {
         
         this.game.add.tileSprite(0, 0, 800, 600, 'background');
         this.wizard = new Wizard(this.game);
+        this.monster = new Monster(this.game);
                
         this.game.add.existing(this.wizard);
+        this.game.add.existing(this.monster);
         
         this.game.physics.startSystem(Phaser.Physics.ARCADE); 
         this.cursors = this.game.input.keyboard.createCursorKeys();       
@@ -28,6 +31,7 @@ export class Play extends Phaser.State {
     
     update() {
         this.wizard.skate(this.cursors);
+        this.monster.chill();
         
         if (this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {                  
             this.wizard.castSpell();
