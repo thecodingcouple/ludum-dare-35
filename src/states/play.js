@@ -10,9 +10,15 @@ export class Play extends Phaser.State {
         this.game.physics.startSystem(Phaser.Physics.ARCADE); 
         this.cursors = this.game.input.keyboard.createCursorKeys();       
         this.game.stage.backgroundColor = "#FFFFFF";
+        
+        this.game.input.keyboard.addKeyCapture([ Phaser.KeyCode.SPACEBAR ]);
     }
     
     update() {
         this.wizard.skate(this.cursors);
+        
+        if (this.game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)) {                  
+            this.wizard.castSpell();
+        }
     }
 }
