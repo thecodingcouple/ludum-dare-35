@@ -48,6 +48,11 @@ export class Play extends Phaser.State {
             this.spell.play();
         }
         
-        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 1000, 1000);
+        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 2000, 2000);
+        this.monsters.forEach(this.game.physics.arcade.collide, this.game.physics.arcade, false,  this.wizard, this.monsters, this.collisionHandler, null, this);
+    }
+    
+    collisionHandler() {
+        console.log('collision occurred');
     }
 }
