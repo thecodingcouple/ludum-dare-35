@@ -8,6 +8,8 @@ export class Play extends Phaser.State {
     }
     
     create() {
+        
+        this.game.add.tileSprite(0, 0, 800, 600, 'background');
         this.wizard = new Wizard(this.game);
                
         this.game.add.existing(this.wizard);
