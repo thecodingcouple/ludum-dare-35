@@ -3,7 +3,7 @@ import { Spell } from './spell';
 
 export class Wizard extends Phaser.Sprite { 
     constructor(game) {
-        super(game, 400, 300, 'wizard');
+        super(game, 350, 300, 'wizard');
         this.anchor.setTo(0.5, 0.5);    
         this.scale.setTo(0.65, 0.65);
         this.animations.add('right', [0,1,2]);        
@@ -24,7 +24,7 @@ export class Wizard extends Phaser.Sprite {
         this.isFacingRight = true;
         
         for(let i = 0; i < 3; i++) {
-           let spell = new Spell(game, 0, 0);
+           let spell = new Spell(game, 350, 300);
            this.spells.add(spell); 
            spell.lifespan = 1;
         }
@@ -32,18 +32,18 @@ export class Wizard extends Phaser.Sprite {
     
     skate(cursors) {     
         if (cursors.up.isDown) {
-            this.body.acceleration.y = -250;                   
+            this.body.acceleration.y = -300;                   
         } else if (cursors.down.isDown) {            
-            this.body.acceleration.y = 250;           
+            this.body.acceleration.y = 300;           
         } else {
             this.body.acceleration.y = 0;
         }
         if (cursors.left.isDown) {       
-            this.body.acceleration.x = -250;
+            this.body.acceleration.x = -300;
             this.animations.play('left', 4, true);
             this.isFacingRight = false;
         } else if (cursors.right.isDown) {          
-            this.body.acceleration.x = 250;
+            this.body.acceleration.x = 300;
             this.animations.play('right', 4, true);
             this.isFacingRight = true;
         } else {            
@@ -57,12 +57,13 @@ export class Wizard extends Phaser.Sprite {
             
             if (spell) {                
                 spell.casting();
-                spell.reset(this.body.x + 32, this.body.y);
+                let spellOffset = this.isFacingRight ? 32 : -32;
+                spell.reset(this.body.x + spellOffset, this.body.y);
                 spell.lifespan = 2000;
                 spell.rotation = this.rotation;
                 let speed = this.isFacingRight ? 550 : -550;
                 this.game.physics.arcade.velocityFromAngle(0, speed, spell.body.velocity);
-                this.spellTime = this.game.time.now + 50;
+                this.spellTime = this.game.time.now + 1000;
             }
         }
     }

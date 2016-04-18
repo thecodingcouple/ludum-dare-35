@@ -31,13 +31,20 @@ export class Play extends Phaser.State {
             let monster = new Monster(this.game, width, height);            
             this.monsters.add(monster);
         }
+        this.monsters.add(new Monster(this.game, 64, 120));
+        this.monsters.add(new Monster(this.game, 64, 600));
         
         // initial tree obstacles
-        for(let x = 0; x < 3; x++) {
-            let width = this.game.width / 2;
-            let height = (this.game.height) / x;
-            this.trees.add(new Tree(this.game, width, height));
-        }
+       
+        this.trees.add(new Tree(this.game, 400, 70));
+        this.trees.add(new Tree(this.game, 200, 150));
+        this.trees.add(new Tree(this.game, 200, 450));
+        this.trees.add(new Tree(this.game, 400, 370));
+        this.trees.add(new Tree(this.game, 400, 300));
+        this.trees.add(new Tree(this.game, 400, 230));
+        this.trees.add(new Tree(this.game, 600, 450));
+        this.trees.add(new Tree(this.game, 600, 150));
+        
         
         this.cursors = this.game.input.keyboard.createCursorKeys();       
         this.game.stage.backgroundColor = "#FFFFFF";        
@@ -52,7 +59,7 @@ export class Play extends Phaser.State {
             this.wizard.castSpell();
         }
         
-        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 3000, 2500);
+        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 150);
         
         this.game.physics.arcade.collide(this.wizard, this.trees);
         this.game.physics.arcade.collide(this.monsters, this.trees);        
