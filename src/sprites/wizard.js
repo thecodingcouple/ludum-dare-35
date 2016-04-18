@@ -6,7 +6,8 @@ export class Wizard extends Phaser.Sprite {
         super(game, 400, 300, 'wizard');
         this.anchor.setTo(0.5, 0.5);    
         this.scale.setTo(0.65, 0.65);
-        this.animations.add('skating', [0,1,2]);
+        this.animations.add('right', [0,1,2]);        
+        this.animations.add('left', [3,4,5]);
         
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         
@@ -30,19 +31,29 @@ export class Wizard extends Phaser.Sprite {
     skate(cursors) {
         
         if (cursors.up.isDown) {
-            this.game.physics.arcade.accelerationFromRotation(this.rotation, 200, this.body.acceleration);            
-            this.animations.play('skating', 4, true);
+            this.body.velocity.y = -150;        
+            this.animations.play('right', 4, true);
         } else {
-            this.body.acceleration.set(0);
-            this.animations.stop('skating');
+            this.body.velocity.y = 0;
+            this.animations.stop('right');
+        }
+        
+        if (cursors.down.isDown) {            
+            this.body.velocity.y = 150;     
+            this.animations.play('left', 4, true);
+        } else {
+            this.body.velocity.y = 0;
+            this.animations.stop('left');
         }
 
         if (cursors.left.isDown) {
-            this.body.angularVelocity = -300;
+            
+            this.body.velocity.x = -150;
         } else if (cursors.right.isDown) {
-            this.body.angularVelocity = 300;
-        } else {
-            this.body.angularVelocity = 0;
+            
+            this.body.velocity.x = 150;
+        } else {            
+            this.body.velocity.x = 0;
         }        
     }
     
