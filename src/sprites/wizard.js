@@ -38,21 +38,12 @@ export class Wizard extends Phaser.Sprite {
         } else {
             this.body.acceleration.y = 0;
         }
-
-<<<<<<< HEAD
-        if (cursors.left.isDown) {            
-            this.body.velocity.x = -150;
-            this.animations.play('left', 4, true);
-        } else if (cursors.right.isDown) {            
-            this.body.velocity.x = 150;
-=======
         if (cursors.left.isDown) {       
             this.body.acceleration.x = -250;
             this.animations.play('left', 4, true);
             this.isFacingRight = false;
         } else if (cursors.right.isDown) {          
             this.body.acceleration.x = 250;
->>>>>>> c2b707e442865f6e2f23f2b13f2cedb3fca8348b
             this.animations.play('right', 4, true);
             this.isFacingRight = true;
         } else {            
