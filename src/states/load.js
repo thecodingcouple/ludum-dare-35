@@ -15,6 +15,7 @@ export class Load extends Phaser.State {
        this.game.load.audio('spell', '../assets/spell1_0.wav');
        this.game.load.audio('kaboom', '../assets/explosion1.mp3');
        this.game.load.audio('shapeshift', '../assets/qubodup-crash.ogg');
+       this.game.load.audio('victory', '../assets/chipquest.wav');
     }
     
     create() {

@@ -15,6 +15,9 @@ export class Play extends Phaser.State {
         this.shapeshiftSoundEffect = this.game.add.audio('shapeshift');
         this.shapeshiftSoundEffect.volume = 0.5;
         
+        this.victorySoundEffect = this.game.add.audio('victory');
+        this.victorySoundEffect.volume = 0.5;  
+        
         this.wizard = new Wizard(this.game);
         this.game.add.existing(this.wizard);
         
@@ -77,7 +80,8 @@ export class Play extends Phaser.State {
         
         monster.destroy();
         
-        if(this.monsters.children.length === 0) {            
+        if(this.monsters.children.length === 0) {           
+            this.victorySoundEffect.play();               
             this.game.state.start('gameover');
         }
     }
