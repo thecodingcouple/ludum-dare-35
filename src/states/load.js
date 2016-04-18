@@ -19,7 +19,7 @@ export class Load extends Phaser.State {
     }
     
     create() {
-        this.game.state.start('menu');
+        this.game.state.start('cutscene');
         
         this.background = this.game.add.audio('backgroundAudio');
         
