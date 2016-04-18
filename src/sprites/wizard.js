@@ -21,6 +21,8 @@ export class Wizard extends Phaser.Sprite {
         this.spells.enableBody = true;
         this.spells.physicsBodyType = Phaser.Physics.ARCADE;
         
+        this.isFacingRight = true;
+        
         for(let i = 0; i < 3; i++) {
            let spell = new Spell(game, 0, 0);
            this.spells.add(spell); 
@@ -47,10 +49,12 @@ export class Wizard extends Phaser.Sprite {
         if (cursors.left.isDown) {       
             this.body.acceleration.x = -250;
             this.animations.play('left', 4, true);
+            this.isFacingRight = false;
         } else if (cursors.right.isDown) {          
             this.body.acceleration.x = 250;
 >>>>>>> c2b707e442865f6e2f23f2b13f2cedb3fca8348b
             this.animations.play('right', 4, true);
+            this.isFacingRight = true;
         } else {            
             this.body.acceleration.x = 0;
         }        
@@ -65,7 +69,8 @@ export class Wizard extends Phaser.Sprite {
                 spell.reset(this.body.x + 32, this.body.y);
                 spell.lifespan = 2000;
                 spell.rotation = this.rotation;
-                this.game.physics.arcade.velocityFromRotation(this.rotation, 100, spell.body.velocity);
+                let speed = this.isFacingRight ? 550 : -550;
+                this.game.physics.arcade.velocityFromAngle(0, speed, spell.body.velocity);
                 this.spellTime = this.game.time.now + 50;
             }
         }
