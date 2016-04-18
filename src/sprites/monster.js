@@ -13,7 +13,10 @@ export class Monster extends Phaser.Sprite {
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
         this.immovable = true;
+        this.body.width -= 32;
+        this.body.height -= 32;
         this.physicsBodyType = Phaser.Physics.ARCADE;
+        
     }
     
     munch() {

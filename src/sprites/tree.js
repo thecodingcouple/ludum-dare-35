@@ -10,6 +10,10 @@ export class Tree extends Phaser.Sprite {
         this.body.collideWorldBounds = true; 
         this.body.moves = false;
         this.immovable = true;
+        
+        this.body.width -= 32;
+        this.body.height -= 32;
+        
         this.physicsBodyType = Phaser.Physics.ARCADE;
     }
 }
