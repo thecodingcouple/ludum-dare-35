@@ -13,3 +13,4 @@ Source code for our [Ludum Dare 35](http://ludumdare.com/compo/) entry.  The the
 * Ice Lake: http://opengameart.org/node/10620
 * Explosion Spritesheet: http://opengameart.org/content/explosion-sheet
 * Explosion Soundeffect: http://opengameart.org/content/wgs-sound-fx-explosion-1
+* Victory music: http://opengameart.org/content/level-up-sound-effects
