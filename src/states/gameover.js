@@ -9,10 +9,10 @@ export class GameOver extends Phaser.State{
         
         textStyle.font = '36px Arial';
         
-        let instructions = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '"p" key to play again', textStyle);
+        let instructions = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '"s" key to play again', textStyle);
         instructions.anchor.set(0.5);
         
-        let pKey = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
-        pKey.onDown.addOnce( () => this.game.state.start('play'));
+        let sKey = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
+        sKey.onDown.addOnce( () => this.game.state.start('play'));
     }
 }

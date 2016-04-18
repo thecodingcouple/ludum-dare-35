@@ -9,7 +9,7 @@ export class Menu extends Phaser.State{
         
         textStyle.font = '36px Arial';
         
-        let instructions = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '"p" key to start', textStyle);
+        let instructions = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '"s" key to start', textStyle);
         instructions.anchor.set(0.5);
         
         let shootMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 75, '"space" key to shoot', textStyle);
@@ -21,8 +21,8 @@ export class Menu extends Phaser.State{
         let muteMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 225, '"m" toggle sound on / off', textStyle);
         muteMessage.anchor.set(0.5);
         
-        let pKey = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
-        pKey.onDown.addOnce( () => this.game.state.start('play'));
+        let sKey = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
+        sKey.onDown.addOnce( () => this.game.state.start('play'));
         
         let mKey = this.game.input.keyboard.addKey(Phaser.KeyCode.M);
         mKey.onDown.add( () => this.game.sound.mute = !this.game.sound.mute);
