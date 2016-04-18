@@ -33,7 +33,7 @@ export class Play extends Phaser.State {
             this.wizard.castSpell();
         }
         
-        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 2000, 2000);
+        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 2500, 2500);
         
         this.game.physics.arcade.collide(this.wizard, this.trees);
         this.game.physics.arcade.collide(this.monsters, this.trees);        
@@ -44,6 +44,8 @@ export class Play extends Phaser.State {
     
     monsterTouchesWizard(wizard, monster) {;
         wizard.kill();
+        
+        this.game.state.start('gameover');
     }
     
     monsterShot(spell, monster) {
@@ -54,6 +56,10 @@ export class Play extends Phaser.State {
         tree.y = monster.y;        
         this.trees.add(tree);
         
-        monster.kill();
+        monster.destroy();
+        
+        if(this.monsters.children.length === 0) {            
+            this.game.state.start('gameover');
+        }
     }
 }
