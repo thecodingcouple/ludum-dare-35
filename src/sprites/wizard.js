@@ -50,7 +50,8 @@ export class Wizard extends Phaser.Sprite {
         if (this.game.time.now > this.spellTime) {
             let spell = this.spells.getFirstExists(false);
             
-            if (spell) {
+            if (spell) {                
+                spell.casting();
                 spell.reset(this.body.x + 32, this.body.y + 32);
                 spell.lifespan = 2000;
                 spell.rotation = this.rotation;
@@ -59,4 +60,5 @@ export class Wizard extends Phaser.Sprite {
             }
         }
     }
+    
 }

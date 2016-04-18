@@ -2,7 +2,7 @@ import { Phaser } from 'phaser';
 
 export class Monster extends Phaser.Sprite {
     constructor(game) {        
-        super(game, game.world.randomX, 50, 'monster');
+        super(game, game.world.randomX, game.world.randomY, 'monster');
         this.anchor.setTo(0.5, 0.5);             
         this.animations.add('munch', [0,1,2,3]);
         
@@ -10,6 +10,8 @@ export class Monster extends Phaser.Sprite {
         
         this.enableBody = true;
         this.body.collideWorldBounds = true; 
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
         this.immovable = true;
         this.physicsBodyType = Phaser.Physics.ARCADE;
     }

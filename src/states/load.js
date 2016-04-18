@@ -9,7 +9,9 @@ export class Load extends Phaser.State {
        this.game.load.image('tree', '../assets/tree.png');     
        this.game.load.spritesheet('wizard', '../assets/wizardsprite.png', 95, 123, 3);         
        this.game.load.spritesheet('monster', '../assets/monster.png', 64, 64, 5);
-       this.game.load.audio('backgroundAudio', '../assets/happy.mp3');
+       this.game.load.spritesheet('icicle', '../assets/icicle_0.png', 64, 64, 8);
+       this.game.load.audio('backgroundAudio', '../assets/happy.mp3');       
+       this.game.load.audio('spell', '../assets/spell1_0.wav');
     }
     
     create() {
