@@ -9,13 +9,19 @@ export class Play extends Phaser.State {
         this.game.add.tileSprite(0, 0, 800, 600, 'background');        
         this.game.physics.startSystem(Phaser.Physics.ARCADE); 
         
+        this.kaboomSoundEffect = this.game.add.audio('kaboom');
+        this.kaboomSoundEffect.volume = 0.5;
+        
+        this.shapeshiftSoundEffect = this.game.add.audio('shapeshift');
+        this.shapeshiftSoundEffect.volume = 0.5;
+        
         this.wizard = new Wizard(this.game);
         this.game.add.existing(this.wizard);
         
         this.trees = this.game.add.group(); 
         this.monsters = this.game.add.group();
         
-        for(let x = 0; x < 5; x++) {            
+        for(let x = 0; x < 2; x++) {            
             let monster = new Monster(this.game);            
             this.monsters.add(monster);
         }
@@ -38,15 +44,17 @@ export class Play extends Phaser.State {
         this.game.physics.arcade.collide(this.wizard, this.trees);
         this.game.physics.arcade.collide(this.monsters, this.trees);        
         this.game.physics.arcade.collide(this.monsters, this.monsters);
+        this.game.physics.arcade.overlap(this.wizard.spells, this.trees, this.spellTouchesTree, null, this);
         this.game.physics.arcade.overlap(this.wizard, this.monsters, this.monsterTouchesWizard, null, this);
         this.game.physics.arcade.overlap(this.wizard.spells, this.monsters, this.monsterShot, null, this);
     }
     
+    spellTouchesTree(spell, tree) {
+        spell.kill();
+    }
+    
     monsterTouchesWizard(wizard, monster) {;
         wizard.kill();        
-        
-        let soundEffect = this.game.add.audio('kaboom');
-        soundEffect.volume = 0.5;
         
         let explosion = this.game.add.sprite(128, 128, 'explosion');
         let explosionAnimantion = explosion.animations.add('explode');
@@ -54,11 +62,13 @@ export class Play extends Phaser.State {
         
         explosion.reset(wizard.body.x, wizard.body.y);
         explosion.play('explode', 60, false, true);
-        soundEffect.play();
+        this.kaboomSoundEffect.play();
     }
     
     monsterShot(spell, monster) {
         spell.kill();
+        
+        this.shapeshiftSoundEffect.play();
         
         let tree = new Tree(this.game);
         tree.x = monster.x;

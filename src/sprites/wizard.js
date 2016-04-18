@@ -20,7 +20,7 @@ export class Wizard extends Phaser.Sprite {
         this.spells.enableBody = true;
         this.spells.physicsBodyType = Phaser.Physics.ARCADE;
         
-        for(let i = 0; i < 10; i++) {
+        for(let i = 0; i < 3; i++) {
            let spell = new Spell(game, 0, 0);
            this.spells.add(spell); 
            spell.lifespan = 1;
@@ -52,7 +52,7 @@ export class Wizard extends Phaser.Sprite {
             
             if (spell) {                
                 spell.casting();
-                spell.reset(this.body.x + 32, this.body.y + 32);
+                spell.reset(this.body.x + 32, this.body.y);
                 spell.lifespan = 2000;
                 spell.rotation = this.rotation;
                 this.game.physics.arcade.velocityFromRotation(this.rotation, 100, spell.body.velocity);
