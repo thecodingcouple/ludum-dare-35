@@ -24,7 +24,7 @@ export class Play extends Phaser.State {
         this.trees = this.game.add.group(); 
         this.monsters = this.game.add.group();
         
-        for(let x = 0; x < 2; x++) {            
+        for(let x = 0; x < 5; x++) {            
             let monster = new Monster(this.game);            
             this.monsters.add(monster);
         }
