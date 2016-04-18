@@ -12,7 +12,7 @@ export class Wizard extends Phaser.Sprite {
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         
         this.body.drag.set(100);
-        this.body.maxVelocity.set(200);  
+        this.body.maxVelocity.set(500);  
         this.body.collideWorldBounds = true; 
         
         this.spellTime = 0;
@@ -28,32 +28,23 @@ export class Wizard extends Phaser.Sprite {
         }
     }
     
-    skate(cursors) {
-        
+    skate(cursors) {     
         if (cursors.up.isDown) {
-            this.body.velocity.y = -150;        
-            this.animations.play('right', 4, true);
+            this.body.acceleration.y = -250;                   
+        } else if (cursors.down.isDown) {            
+            this.body.acceleration.y = 250;           
         } else {
-            this.body.velocity.y = 0;
-            this.animations.stop('right');
-        }
-        
-        if (cursors.down.isDown) {            
-            this.body.velocity.y = 150;     
-            this.animations.play('left', 4, true);
-        } else {
-            this.body.velocity.y = 0;
-            this.animations.stop('left');
+            this.body.acceleration.y = 0;
         }
 
-        if (cursors.left.isDown) {
-            
-            this.body.velocity.x = -150;
-        } else if (cursors.right.isDown) {
-            
-            this.body.velocity.x = 150;
+        if (cursors.left.isDown) {       
+            this.body.acceleration.x = -250;
+            this.animations.play('left', 4, true);
+        } else if (cursors.right.isDown) {          
+            this.body.acceleration.x = 250;
+            this.animations.play('right', 4, true);
         } else {            
-            this.body.velocity.x = 0;
+            this.body.acceleration.x = 0;
         }        
     }
     
