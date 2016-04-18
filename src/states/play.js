@@ -18,7 +18,7 @@ export class Play extends Phaser.State {
         this.victorySoundEffect = this.game.add.audio('victory');
         this.victorySoundEffect.volume = 0.5;  
         
-        this.wizard = new Wizard(this.game);
+        this.wizard = new Wizard(this.game, 350, 300);
         this.game.add.existing(this.wizard);
         
         this.trees = this.game.add.group(); 
@@ -97,7 +97,7 @@ export class Play extends Phaser.State {
         
         if(this.monsters.children.length === 0) {           
             this.victorySoundEffect.play();               
-            this.game.state.start('gameover');
+            this.game.state.start('win');
         }
     }
 }

@@ -2,8 +2,8 @@ import { Phaser } from 'phaser';
 import { Spell } from './spell';
 
 export class Wizard extends Phaser.Sprite { 
-    constructor(game) {
-        super(game, 350, 300, 'wizard');
+    constructor(game, x, y) {
+        super(game, x, y, 'wizard');
         this.anchor.setTo(0.5, 0.5);    
         this.scale.setTo(0.65, 0.65);
         this.animations.add('right', [0,1,2]);        

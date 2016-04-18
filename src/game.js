@@ -4,6 +4,7 @@ import { CutScene } from './states/cutscene';
 import { Menu } from './states/menu';
 import { Play } from './states/play';
 import { GameOver } from './states/gameover';
+import { Win } from './states/win';
 
 export class Game extends Phaser.Game{
     constructor() {
@@ -14,6 +15,7 @@ export class Game extends Phaser.Game{
         this.state.add('menu', Menu);
         this.state.add('play', Play);
         this.state.add('gameover', GameOver);
+        this.state.add('win', Win);
         
         this.state.start('load');
     }
