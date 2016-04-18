@@ -33,7 +33,7 @@ export class Play extends Phaser.State {
             this.wizard.castSpell();
         }
         
-        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 2500, 2500);
+        this.monsters.forEach(this.game.physics.arcade.moveToObject, this.game.physics.arcade, false, this.wizard, 3000, 2500);
         
         this.game.physics.arcade.collide(this.wizard, this.trees);
         this.game.physics.arcade.collide(this.monsters, this.trees);        
@@ -43,9 +43,18 @@ export class Play extends Phaser.State {
     }
     
     monsterTouchesWizard(wizard, monster) {;
-        wizard.kill();
+        wizard.kill();        
         
-        this.game.state.start('gameover');
+        let soundEffect = this.game.add.audio('kaboom');
+        soundEffect.volume = 0.5;
+        
+        let explosion = this.game.add.sprite(128, 128, 'explosion');
+        let explosionAnimantion = explosion.animations.add('explode');
+        explosionAnimantion.onComplete.add(() => this.game.state.start('gameover'), this);
+        
+        explosion.reset(wizard.body.x, wizard.body.y);
+        explosion.play('explode', 60, false, true);
+        soundEffect.play();
     }
     
     monsterShot(spell, monster) {
