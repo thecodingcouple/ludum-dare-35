@@ -24,9 +24,19 @@ export class Play extends Phaser.State {
         this.trees = this.game.add.group(); 
         this.monsters = this.game.add.group();
         
+        // starting monsters
         for(let x = 0; x < 5; x++) {            
-            let monster = new Monster(this.game);            
+            let width = this.game.width - 20;
+            let height = this.game.height * .20 * x;
+            let monster = new Monster(this.game, width, height);            
             this.monsters.add(monster);
+        }
+        
+        // initial tree obstacles
+        for(let x = 0; x < 3; x++) {
+            let width = this.game.width / 2;
+            let height = (this.game.height) / x;
+            this.trees.add(new Tree(this.game, width, height));
         }
         
         this.cursors = this.game.input.keyboard.createCursorKeys();       
@@ -73,9 +83,7 @@ export class Play extends Phaser.State {
         
         this.shapeshiftSoundEffect.play();
         
-        let tree = new Tree(this.game);
-        tree.x = monster.x;
-        tree.y = monster.y;        
+        let tree = new Tree(this.game, monster.x, monster.y);
         this.trees.add(tree);
         
         monster.destroy();

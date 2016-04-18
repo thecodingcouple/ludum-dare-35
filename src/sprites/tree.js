@@ -1,12 +1,9 @@
 import { Phaser } from 'phaser';
 
 export class Tree extends Phaser.Sprite {
-    constructor(game) {
-             
-        super(game, game.world.randomX, game.world.randomY, 'tree');
+    constructor(game, x, y) {             
+        super(game, x, y, 'tree');
         this.anchor.setTo(0.5, 0.5);          
-        
-        
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         
         this.enableBody = true;

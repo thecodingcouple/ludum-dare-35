@@ -1,8 +1,8 @@
 import { Phaser } from 'phaser';
 
 export class Monster extends Phaser.Sprite {
-    constructor(game) {        
-        super(game, game.world.randomX, game.world.randomY, 'monster');
+    constructor(game, x, y) {        
+        super(game, x, y, 'monster');
         this.anchor.setTo(0.5, 0.5);             
         this.animations.add('munch', [0,1,2,3]);
         
