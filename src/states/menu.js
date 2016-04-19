@@ -15,7 +15,9 @@ export class Menu extends Phaser.State{
         let shootMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 75, '"space" key to shoot', textStyle);
         shootMessage.anchor.set(0.5);
         
-        let controlMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 150, 'arrow keys to move', textStyle);
+
+        let controlMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 150, 'use arrow keys to move', textStyle);
+
         controlMessage.anchor.set(0.5);
         
         let muteMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 225, '"m" toggle sound on / off', textStyle);
