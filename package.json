@@ -6,6 +6,7 @@
   "jspm": {
     "dependencies": {
       "bootstrap": "github:twbs/bootstrap@^3.3.6",
+      "font-awesome": "npm:font-awesome@^4.6.1",
       "phaser": "github:photonstorm/phaser@^2.4.6"
     },
     "devDependencies": {

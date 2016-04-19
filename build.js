@@ -66,23 +66,25 @@ System.register('src/states/load.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
         }
     };
 });
-System.register("src/states/cutscene.js", ["npm:babel-runtime@5.8.38/helpers/get.js", "npm:babel-runtime@5.8.38/helpers/inherits.js", "npm:babel-runtime@5.8.38/helpers/create-class.js", "npm:babel-runtime@5.8.38/helpers/class-call-check.js", "github:photonstorm/phaser@2.4.6.js"], function (_export) {
-    var _get, _inherits, _createClass, _classCallCheck, Phaser, CutScene;
+System.register('src/states/cutscene.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.6.js', 'src/sprites/wizard.js'], function (_export) {
+    var _get, _inherits, _createClass, _classCallCheck, Phaser, Wizard, CutScene;
 
     return {
         setters: [function (_npmBabelRuntime5838HelpersGetJs) {
-            _get = _npmBabelRuntime5838HelpersGetJs["default"];
+            _get = _npmBabelRuntime5838HelpersGetJs['default'];
         }, function (_npmBabelRuntime5838HelpersInheritsJs) {
-            _inherits = _npmBabelRuntime5838HelpersInheritsJs["default"];
+            _inherits = _npmBabelRuntime5838HelpersInheritsJs['default'];
         }, function (_npmBabelRuntime5838HelpersCreateClassJs) {
-            _createClass = _npmBabelRuntime5838HelpersCreateClassJs["default"];
+            _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
         }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
-            _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs["default"];
+            _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
         }, function (_githubPhotonstormPhaser246Js) {
             Phaser = _githubPhotonstormPhaser246Js.Phaser;
+        }, function (_srcSpritesWizardJs) {
+            Wizard = _srcSpritesWizardJs.Wizard;
         }],
         execute: function () {
-            "use strict";
+            'use strict';
 
             CutScene = (function (_Phaser$State) {
                 _inherits(CutScene, _Phaser$State);
@@ -90,20 +92,21 @@ System.register("src/states/cutscene.js", ["npm:babel-runtime@5.8.38/helpers/get
                 function CutScene() {
                     _classCallCheck(this, CutScene);
 
-                    _get(Object.getPrototypeOf(CutScene.prototype), "constructor", this).apply(this, arguments);
+                    _get(Object.getPrototypeOf(CutScene.prototype), 'constructor', this).apply(this, arguments);
                 }
 
                 _createClass(CutScene, [{
-                    key: "create",
+                    key: 'create',
                     value: function create() {
                         var _this = this;
 
-                        this.story = ["The trees at the frozen lake are becoming plant-demons.", "Don thine ice skates and turneth those evil folk back into trees!", "Press 's' to continue..."];
+                        this.story = ["Press 's' to skip intro...", "", "The trees at the frozen lake are becoming plant-demons.", "Don thine ice skates and turneth those evil folk back into trees!"];
 
                         var textStyle = { font: '22px Arial', alight: 'center', stroke: 'blue', fill: 'blue' };
 
                         this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 200, '', textStyle);
                         this.text.anchor.set(0.5);
+                        this.text.setScaleMinMax(1);
 
                         this.line = [];
                         this.wordIndex = 0;
@@ -111,18 +114,24 @@ System.register("src/states/cutscene.js", ["npm:babel-runtime@5.8.38/helpers/get
 
                         this.wordDelay = 120;
                         this.lineDelay = 400;
+                        this.listener = function () {
+                            return _this.nextState();
+                        };
 
-                        var sKey = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
-                        sKey.onDown.addOnce(function () {
-                            return _this.game.state.start('menu');
-                        });
+                        this.sKey = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
+                        this.sKey.onDown.addOnce(this.listener);
 
                         this.nextLine();
+
+                        this.wizard = new Wizard(this.game, 400, 300);
+                        this.game.add.existing(this.wizard);
+                        this.game.camera.follow(this.wizard, Phaser.Camera.FOLLOW_LOCKON);
                     }
                 }, {
-                    key: "nextLine",
+                    key: 'nextLine',
                     value: function nextLine() {
                         if (this.lineIndex === this.story.length) {
+                            this.game.time.events.add(400, this.startZoom, this);
                             return;
                         }
                         this.line = this.story[this.lineIndex].split(' ');
@@ -131,7 +140,7 @@ System.register("src/states/cutscene.js", ["npm:babel-runtime@5.8.38/helpers/get
                         this.lineIndex++;
                     }
                 }, {
-                    key: "nextWord",
+                    key: 'nextWord',
                     value: function nextWord() {
                         this.text.text = this.text.text.concat(this.line[this.wordIndex] + " ");
                         this.wordIndex++;
@@ -140,12 +149,37 @@ System.register("src/states/cutscene.js", ["npm:babel-runtime@5.8.38/helpers/get
                             this.game.time.events.add(this.lineDelay, this.nextLine, this);
                         }
                     }
+                }, {
+                    key: 'startZoom',
+                    value: function startZoom() {
+                        this.text.destroy();
+                        this.game.time.events.add(400, this.zoomIn, this);
+                    }
+                }, {
+                    key: 'zoomIn',
+                    value: function zoomIn() {
+                        var scale = this.game.world.scale.x + 0.5;
+                        this.game.world.scale.setTo(scale);
+
+                        if (this.game.world.scale.x < 8) {
+                            this.game.time.events.add(400, this.zoomIn, this);
+                        } else {
+                            this.nextState();
+                        }
+                    }
+                }, {
+                    key: 'nextState',
+                    value: function nextState() {
+                        this.game.world.scale.setTo(1);
+                        this.sKey.onDown.remove(this.listener);
+                        this.game.state.start('menu');
+                    }
                 }]);
 
                 return CutScene;
             })(Phaser.State);
 
-            _export("CutScene", CutScene);
+            _export('CutScene', CutScene);
         }
     };
 });
@@ -195,6 +229,7 @@ System.register('src/states/menu.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                         shootMessage.anchor.set(0.5);
 
                         var controlMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 150, 'use arrow keys to move', textStyle);
+
                         controlMessage.anchor.set(0.5);
 
                         var muteMessage = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 225, '"m" toggle sound on / off', textStyle);
@@ -288,10 +323,10 @@ System.register('src/sprites/wizard.js', ['npm:babel-runtime@5.8.38/helpers/get.
             Wizard = (function (_Phaser$Sprite) {
                 _inherits(Wizard, _Phaser$Sprite);
 
-                function Wizard(game) {
+                function Wizard(game, x, y) {
                     _classCallCheck(this, Wizard);
 
-                    _get(Object.getPrototypeOf(Wizard.prototype), 'constructor', this).call(this, game, 350, 300, 'wizard');
+                    _get(Object.getPrototypeOf(Wizard.prototype), 'constructor', this).call(this, game, x, y, 'wizard');
                     this.anchor.setTo(0.5, 0.5);
                     this.scale.setTo(0.65, 0.65);
                     this.animations.add('right', [0, 1, 2]);
@@ -514,7 +549,7 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                         this.victorySoundEffect = this.game.add.audio('victory');
                         this.victorySoundEffect.volume = 0.5;
 
-                        this.wizard = new Wizard(this.game);
+                        this.wizard = new Wizard(this.game, 350, 300);
                         this.game.add.existing(this.wizard);
 
                         this.trees = this.game.add.group();
@@ -601,7 +636,7 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
 
                         if (this.monsters.children.length === 0) {
                             this.victorySoundEffect.play();
-                            this.game.state.start('gameover');
+                            this.game.state.start('win');
                         }
                     }
                 }]);
@@ -610,6 +645,62 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
             })(Phaser.State);
 
             _export('Play', Play);
+        }
+    };
+});
+System.register('src/states/gameover.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.6.js'], function (_export) {
+    var _get, _inherits, _createClass, _classCallCheck, Phaser, GameOver;
+
+    return {
+        setters: [function (_npmBabelRuntime5838HelpersGetJs) {
+            _get = _npmBabelRuntime5838HelpersGetJs['default'];
+        }, function (_npmBabelRuntime5838HelpersInheritsJs) {
+            _inherits = _npmBabelRuntime5838HelpersInheritsJs['default'];
+        }, function (_npmBabelRuntime5838HelpersCreateClassJs) {
+            _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
+        }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+            _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
+        }, function (_githubPhotonstormPhaser246Js) {
+            Phaser = _githubPhotonstormPhaser246Js.Phaser;
+        }],
+        execute: function () {
+            'use strict';
+
+            GameOver = (function (_Phaser$State) {
+                _inherits(GameOver, _Phaser$State);
+
+                function GameOver() {
+                    _classCallCheck(this, GameOver);
+
+                    _get(Object.getPrototypeOf(GameOver.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                _createClass(GameOver, [{
+                    key: 'create',
+                    value: function create() {
+                        var _this = this;
+
+                        var textStyle = { font: '45px Arial', alight: 'center', stroke: 'red', fill: 'red' };
+
+                        var title = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 100, 'GAME OVER', textStyle);
+                        title.anchor.set(0.5);
+
+                        textStyle.font = '36px Arial';
+
+                        var instructions = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '"s" key to play again', textStyle);
+                        instructions.anchor.set(0.5);
+
+                        var sKey = this.game.input.keyboard.addKey(Phaser.KeyCode.S);
+                        sKey.onDown.addOnce(function () {
+                            return _this.game.state.start('play');
+                        });
+                    }
+                }]);
+
+                return GameOver;
+            })(Phaser.State);
+
+            _export('GameOver', GameOver);
         }
     };
 });
@@ -40417,8 +40508,8 @@ System.registerDynamic("github:photonstorm/phaser@2.4.6.js", ["github:photonstor
   return module.exports;
 });
 
-System.register('src/states/gameover.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.6.js'], function (_export) {
-    var _get, _inherits, _createClass, _classCallCheck, Phaser, GameOver;
+System.register('src/states/win.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.6.js'], function (_export) {
+    var _get, _inherits, _createClass, _classCallCheck, Phaser, Win;
 
     return {
         setters: [function (_npmBabelRuntime5838HelpersGetJs) {
@@ -40435,23 +40526,23 @@ System.register('src/states/gameover.js', ['npm:babel-runtime@5.8.38/helpers/get
         execute: function () {
             'use strict';
 
-            GameOver = (function (_Phaser$State) {
-                _inherits(GameOver, _Phaser$State);
+            Win = (function (_Phaser$State) {
+                _inherits(Win, _Phaser$State);
 
-                function GameOver() {
-                    _classCallCheck(this, GameOver);
+                function Win() {
+                    _classCallCheck(this, Win);
 
-                    _get(Object.getPrototypeOf(GameOver.prototype), 'constructor', this).apply(this, arguments);
+                    _get(Object.getPrototypeOf(Win.prototype), 'constructor', this).apply(this, arguments);
                 }
 
-                _createClass(GameOver, [{
+                _createClass(Win, [{
                     key: 'create',
                     value: function create() {
                         var _this = this;
 
-                        var textStyle = { font: '45px Arial', alight: 'center', stroke: 'red', fill: 'red' };
+                        var textStyle = { font: '45px Arial', alight: 'center', stroke: 'black', fill: 'red' };
 
-                        var title = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 100, 'GAME OVER', textStyle);
+                        var title = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 100, 'Victory!', textStyle);
                         title.anchor.set(0.5);
 
                         textStyle.font = '36px Arial';
@@ -40466,15 +40557,15 @@ System.register('src/states/gameover.js', ['npm:babel-runtime@5.8.38/helpers/get
                     }
                 }]);
 
-                return GameOver;
+                return Win;
             })(Phaser.State);
 
-            _export('GameOver', GameOver);
+            _export('Win', Win);
         }
     };
 });
-System.register('src/game.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.6.js', 'src/states/load.js', 'src/states/cutscene.js', 'src/states/menu.js', 'src/states/play.js', 'src/states/gameover.js'], function (_export) {
-    var _get, _inherits, _classCallCheck, Phaser, Load, CutScene, Menu, Play, GameOver, Game;
+System.register('src/game.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.6.js', 'src/states/load.js', 'src/states/cutscene.js', 'src/states/menu.js', 'src/states/play.js', 'src/states/gameover.js', 'src/states/win.js'], function (_export) {
+    var _get, _inherits, _classCallCheck, Phaser, Load, CutScene, Menu, Play, GameOver, Win, Game;
 
     return {
         setters: [function (_npmBabelRuntime5838HelpersGetJs) {
@@ -40495,6 +40586,8 @@ System.register('src/game.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:
             Play = _srcStatesPlayJs.Play;
         }, function (_srcStatesGameoverJs) {
             GameOver = _srcStatesGameoverJs.GameOver;
+        }, function (_srcStatesWinJs) {
+            Win = _srcStatesWinJs.Win;
         }],
         execute: function () {
             'use strict';
@@ -40512,6 +40605,7 @@ System.register('src/game.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:
                     this.state.add('menu', Menu);
                     this.state.add('play', Play);
                     this.state.add('gameover', GameOver);
+                    this.state.add('win', Win);
 
                     this.state.start('load');
                 }
