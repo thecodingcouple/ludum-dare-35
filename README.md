@@ -1,6 +1,8 @@
 # ludum-dare-35
 Source code for our [Ludum Dare 35](http://ludumdare.com/compo/) entry.  The theme is "Shapeshift."
 
+Play the game [here](http://thecodingcouple.github.io/ludum-dare-35/)!
+
 ## Third Party Assets
 
 * Background Music: http://opengameart.org/content/happy-arcade-tune
